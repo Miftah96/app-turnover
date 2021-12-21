@@ -22,6 +22,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', 'Api\AuthController@register');
 Route::post('login', 'Api\AuthController@login')->name('login');
 
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::apiResource('merchant', 'Api\MerchantController');
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('merchant', 'Api\MerchantController');
+    Route::resource('outlet', 'Api\OutletController');
+    Route::resource('transaction', 'Api\TransactionController');
+
+    Route::group(['prefix' => 'list'], function () {
+        Route::get('outlet', 'Api\OutletController@getList')->name('outlet.list');
+        Route::get('merchant', 'Api\MerchantController@getList')->name('merchant.list');
+    });
 });

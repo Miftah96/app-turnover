@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Outlet extends Model
 {
-    use HasFactory;
     protected $table = "outlets";
     protected $fillable = [
         "merchant_id",
@@ -15,4 +14,14 @@ class Outlet extends Model
         "created_by",
         "updated_by",
     ];
+
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction');
+    }
+
+    public function merchant()
+    {
+        return $this->belongsTo('App\Merchant');
+    }
 }

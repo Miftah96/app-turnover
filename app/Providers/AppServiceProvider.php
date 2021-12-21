@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\PermissionHelper;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // //
+        // view()->composer('*', function ($view) {
+        //     $view->with('permissionAccess', PermissionHelper::permissionAccess())
+        //     ->with('currentRoute', request()->route()->getName());
+        // });
     }
 }

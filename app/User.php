@@ -52,4 +52,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function merchant()
+    {
+        return $this->hasOne('App\Merchant', 'merhant_id');
+    }
 }
