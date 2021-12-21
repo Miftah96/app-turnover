@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\ResponseHelper;
-use App\Http\Controllers\Controller;
-use App\User;
-use Carbon\Carbon;
 use Hash;
 use JWTAuth;
+use JWTFactory;
+use App\User;
 use Validator;
-use Symfony\Component\HttpFoundation\Response;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class AuthController extends Controller
@@ -43,17 +45,21 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        
         $data       = $request->only('user_name', 'password');
-        $jwt_token  = null;
-        if (!$jwt_token = JWTAuth::attempt($data)) {
+        $credential  = null;
+
+        if (!$credential = JWTAuth::attempt($data)) {
             return response()->json([
                     'success' => false,
-                    'message' => 'Invalid Email or Password',
+                    'message' => 'Invalid username or Password',
                 ], Response::HTTP_UNAUTHORIZED);
         }
+        $user = Auth::user();
         return response()->json([
-            'success' => true,
-            'token' => $jwt_token,
+            'token'     => $credential,
+            'success'   => true,
+            'user'      => $user
         ]);
     }
 }

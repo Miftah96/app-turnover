@@ -20,3 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('register', 'Api\AuthController@register');
+Route::post('login', 'Api\AuthController@login')->name('login');
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('merchant', 'Api\MerchantController');
+});
