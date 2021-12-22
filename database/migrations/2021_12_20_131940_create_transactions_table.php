@@ -18,9 +18,10 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('merchant_id')->unsigned();
             $table->bigInteger('outlet_id')->unsigned();
             $table->double('bill_total');
+            $table->timestamp('created_at')->nullable();
             $table->bigInteger('created_by');
+            $table->timestamp('updated_at')->nullable();
             $table->bigInteger('updated_by');
-            $table->timestamps();
             $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->foreign('outlet_id')->references('id')->on('outlets');
         });

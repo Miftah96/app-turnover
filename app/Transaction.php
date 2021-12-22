@@ -15,4 +15,14 @@ class Transaction extends Model
         "created_by",
         "updated_by",
     ];
+
+    public function merchant()
+    {
+        return $this->belongsTo('App\Merchant')->with('user');
+    }
+
+    public function outlet()
+    {
+        return $this->belongsTo('App\Outlet');
+    }
 }

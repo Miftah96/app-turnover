@@ -17,9 +17,10 @@ class CreateOutletsTable extends Migration
             $table->id();
             $table->bigInteger('merchant_id')->unsigned();
             $table->string('outlet_name');
+            $table->timestamp('created_at')->nullable();
             $table->bigInteger('created_by');
+            $table->timestamp('updated_at')->nullable();
             $table->bigInteger('updated_by');
-            $table->timestamps();
             $table->foreign('merchant_id')->references('id')->on('merchants');
         });
     }

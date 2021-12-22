@@ -30,5 +30,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'list'], function () {
         Route::get('outlet', 'Api\OutletController@getList')->name('outlet.list');
         Route::get('merchant', 'Api\MerchantController@getList')->name('merchant.list');
+        // Route::get('transaction', 'Api\TransactionController@getList')->name('transaction.list');
     });
 });

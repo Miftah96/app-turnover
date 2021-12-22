@@ -10,11 +10,46 @@ use App\Transaction;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper as ResponseHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\TransactionResource;
 use App\Http\Resources\TransactionCollection;
 
 class TransactionController extends Controller
 {
+    public function index(Request $request)
+    {
+
+        $month      = $request->month;
+        $start_date = $request->start_date;
+        $end_date   = $request->end_date;
+        $merchant_name  = $request->merchant_name;
+
+        // $data  = DB::table('transactions')->selectRaw('transactions, SUM(bill_total) AS omzet')
+        $data  = DB::table('transactions')
+                ->select( 'transactions.created_at AS date', DB::raw('SUM(transactions.bill_total) as omzet'))
+                ->addSelect('merchants.merchant_name', 'outlets.outlet_name')
+                ->when($month, function ($query, $month) {
+                    return $query->whereMonth('transactions.created_at', $month);
+                })
+                ->when($start_date, function ($query, $start_date) {
+                    return $query->whereDay('transactions.created_at', '>=', $start_date);
+                })
+                ->when($end_date, function ($query, $end_date) {
+                    return $query->whereDay('transactions.created_at', '<=', $end_date);
+                })
+                ->join('merchants', 'transactions.merchant_id', '=', 'merchants.id')
+                ->join('outlets', 'transactions.outlet_id', '=', 'outlets.id')
+                ->groupBy(DB::raw('DATE_FORMAT(transactions.created_at, "%d")'))
+                ->where('transactions.updated_by', Auth::id())
+                ->where('transactions.created_by', Auth::id())
+                ->where('merchants.updated_by', Auth::id())
+                ->where('merchants.updated_by', Auth::id())
+                ->where('outlets.created_by', Auth::id())
+                ->where('outlets.created_by', Auth::id())
+                ->paginate();
+                
+        return ResponseHelper::successResponse($data);
+    }
     public function store(Request $request)
     {
         DB::beginTransaction();

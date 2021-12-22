@@ -17,8 +17,9 @@ class CreateMerchantsTable extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->string('merchant_name', 40)->nullable(false);
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
             $table->bigInteger('created_by');
+            $table->timestamp('updated_at')->nullable();
             $table->bigInteger('updated_by');
             $table->foreign('user_id')->references('id')->on('users');
         });

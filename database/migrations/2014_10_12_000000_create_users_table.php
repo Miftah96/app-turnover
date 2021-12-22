@@ -18,11 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name', 45)->nullable();
             $table->string('user_name', 45)->nullable();
             $table->string('password', 255)->nullable();
-            $table->rememberToken();
+            $table->timestamp('created_at')->nullable();
             $table->bigInteger('created_by');
+            $table->timestamp('updated_at')->nullable();
             $table->bigInteger('updated_by');
-
-            $table->timestamps();
         });
     }
 
